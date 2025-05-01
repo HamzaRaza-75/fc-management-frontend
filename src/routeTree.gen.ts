@@ -11,10 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ManagementImport } from './routes/_management'
 import { Route as IndexImport } from './routes/index'
-import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
+import { Route as ManagementManagementIndexImport } from './routes/_management.management.index'
+import { Route as ManagementManagementTasksImport } from './routes/_management.management.tasks'
 
 // Create/Update Routes
+
+const ManagementRoute = ManagementImport.update({
+  id: '/_management',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -22,10 +29,16 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRoute,
+const ManagementManagementIndexRoute = ManagementManagementIndexImport.update({
+  id: '/management/',
+  path: '/management/',
+  getParentRoute: () => ManagementRoute,
+} as any)
+
+const ManagementManagementTasksRoute = ManagementManagementTasksImport.update({
+  id: '/management/tasks',
+  path: '/management/tasks',
+  getParentRoute: () => ManagementRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -39,51 +52,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryImport
+    '/_management': {
+      id: '/_management'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ManagementImport
       parentRoute: typeof rootRoute
+    }
+    '/_management/management/tasks': {
+      id: '/_management/management/tasks'
+      path: '/management/tasks'
+      fullPath: '/management/tasks'
+      preLoaderRoute: typeof ManagementManagementTasksImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/': {
+      id: '/_management/management/'
+      path: '/management'
+      fullPath: '/management'
+      preLoaderRoute: typeof ManagementManagementIndexImport
+      parentRoute: typeof ManagementImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface ManagementRouteChildren {
+  ManagementManagementTasksRoute: typeof ManagementManagementTasksRoute
+  ManagementManagementIndexRoute: typeof ManagementManagementIndexRoute
+}
+
+const ManagementRouteChildren: ManagementRouteChildren = {
+  ManagementManagementTasksRoute: ManagementManagementTasksRoute,
+  ManagementManagementIndexRoute: ManagementManagementIndexRoute,
+}
+
+const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
+  ManagementRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '': typeof ManagementRouteWithChildren
+  '/management/tasks': typeof ManagementManagementTasksRoute
+  '/management': typeof ManagementManagementIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '': typeof ManagementRouteWithChildren
+  '/management/tasks': typeof ManagementManagementTasksRoute
+  '/management': typeof ManagementManagementIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/_management': typeof ManagementRouteWithChildren
+  '/_management/management/tasks': typeof ManagementManagementTasksRoute
+  '/_management/management/': typeof ManagementManagementIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths: '/' | '' | '/management/tasks' | '/management'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to: '/' | '' | '/management/tasks' | '/management'
+  id:
+    | '__root__'
+    | '/'
+    | '/_management'
+    | '/_management/management/tasks'
+    | '/_management/management/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  ManagementRoute: typeof ManagementRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  ManagementRoute: ManagementRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +149,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/demo/tanstack-query"
+        "/_management"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/demo/tanstack-query": {
-      "filePath": "demo.tanstack-query.tsx"
+    "/_management": {
+      "filePath": "_management.tsx",
+      "children": [
+        "/_management/management/tasks",
+        "/_management/management/"
+      ]
+    },
+    "/_management/management/tasks": {
+      "filePath": "_management.management.tasks.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/": {
+      "filePath": "_management.management.index.tsx",
+      "parent": "/_management"
     }
   }
 }
