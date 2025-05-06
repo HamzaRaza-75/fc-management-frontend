@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -16,7 +18,24 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ManagementManagementIndexImport } from './routes/_management.management.index'
 import { Route as ManagementManagementTasksImport } from './routes/_management.management.tasks'
 
+// Create Virtual Routes
+
+const SignupLazyImport = createFileRoute('/signup')()
+const LoginLazyImport = createFileRoute('/login')()
+
 // Create/Update Routes
+
+const SignupLazyRoute = SignupLazyImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
+
+const LoginLazyRoute = LoginLazyImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
 const ManagementRoute = ManagementImport.update({
   id: '/_management',
@@ -59,6 +78,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagementImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_management/management/tasks': {
       id: '/_management/management/tasks'
       path: '/management/tasks'
@@ -95,6 +128,8 @@ const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof ManagementRouteWithChildren
+  '/login': typeof LoginLazyRoute
+  '/signup': typeof SignupLazyRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
 }
@@ -102,6 +137,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof ManagementRouteWithChildren
+  '/login': typeof LoginLazyRoute
+  '/signup': typeof SignupLazyRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
 }
@@ -110,19 +147,29 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_management': typeof ManagementRouteWithChildren
+  '/login': typeof LoginLazyRoute
+  '/signup': typeof SignupLazyRoute
   '/_management/management/tasks': typeof ManagementManagementTasksRoute
   '/_management/management/': typeof ManagementManagementIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/management/tasks' | '/management'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/signup'
+    | '/management/tasks'
+    | '/management'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/management/tasks' | '/management'
+  to: '/' | '' | '/login' | '/signup' | '/management/tasks' | '/management'
   id:
     | '__root__'
     | '/'
     | '/_management'
+    | '/login'
+    | '/signup'
     | '/_management/management/tasks'
     | '/_management/management/'
   fileRoutesById: FileRoutesById
@@ -131,11 +178,15 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ManagementRoute: typeof ManagementRouteWithChildren
+  LoginLazyRoute: typeof LoginLazyRoute
+  SignupLazyRoute: typeof SignupLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ManagementRoute: ManagementRouteWithChildren,
+  LoginLazyRoute: LoginLazyRoute,
+  SignupLazyRoute: SignupLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -149,7 +200,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_management"
+        "/_management",
+        "/login",
+        "/signup"
       ]
     },
     "/": {
@@ -161,6 +214,12 @@ export const routeTree = rootRoute
         "/_management/management/tasks",
         "/_management/management/"
       ]
+    },
+    "/login": {
+      "filePath": "login.lazy.tsx"
+    },
+    "/signup": {
+      "filePath": "signup.lazy.tsx"
     },
     "/_management/management/tasks": {
       "filePath": "_management.management.tasks.tsx",
