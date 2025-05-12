@@ -1,9 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { Link } from '@tanstack/react-router';
-
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 

@@ -42,22 +42,6 @@ export function MainNav() {
         >
           Charts
         </Link>
-        <Link
-          to="/"
-          className={cn(
-            'transition-colors hover:text-foreground/80 text-foreground',
-          )}
-        >
-          Themes
-        </Link>
-        <Link
-          to="/"
-          className={cn(
-            'transition-colors hover:text-foreground/80 text-foreground',
-          )}
-        >
-          Colors
-        </Link>
       </nav>
     </div>
   );

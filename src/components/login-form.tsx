@@ -1,14 +1,47 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { FieldInfo } from '@/lib/fieldinfo';
+
+const userSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, 'Password Must contains 8 Digits'),
+});
+
+interface Login {
+  email: string;
+  password: string;
+}
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"form">) {
+}: React.ComponentProps<'form'>) {
+  const defaultLogin: Login = { email: '', password: '' };
+
+  const form = useForm({
+    defaultValues: defaultLogin,
+    validators: {
+      onChange: userSchema,
+    },
+    onSubmit: async ({ value }) => {
+      console.log(value);
+    },
+  });
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+        form.reset();
+      }}
+      className={cn('flex flex-col gap-6', className)}
+      {...props}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -17,24 +50,54 @@ export function LoginForm({
       </div>
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <form.Field name="email">
+            {(field) => (
+              <>
+                <Label htmlFor={field.name}>Email</Label>
+                <Input
+                  id="email"
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="email"
+                  placeholder="email@example.com"
+                  required
+                />
+                <span className="text-primary text-xs font-bold">
+                  <FieldInfo field={field} />
+                </span>
+              </>
+            )}
+          </form.Field>
         </div>
         <div className="grid gap-3">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" required />
+          <form.Field
+            name="password"
+            children={(field) => (
+              <>
+                <Label htmlFor={field.name}>Password</Label>
+                <Input
+                  name={field.name}
+                  type="password"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  placeholder="password"
+                />
+                <span className="text-primary text-xs font-bold">
+                  <FieldInfo field={field} />
+                </span>
+              </>
+            )}
+          />
         </div>
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
+        <form.Subscribe
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]) => (
+            <Button type="submit" disabled={!canSubmit} className="w-full">
+              {isSubmitting ? '....' : 'Login'}
+            </Button>
+          )}
+        />
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">
             Or continue with
@@ -51,11 +114,11 @@ export function LoginForm({
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
+        Don&apos;t have an account?{' '}
         <a href="#" className="underline underline-offset-4">
           Sign up
         </a>
       </div>
     </form>
-  )
+  );
 }
