@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { FieldInfo } from '@/lib/fieldinfo';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@services/authentication';
 
 const userSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8, 'Password Must contains 8 Digits'),
+  password: z.string().min(6, 'Password Must contains 8 Digits'),
 });
 
 interface Login {
@@ -20,6 +22,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'form'>) {
+  // fetch request mutation
   const defaultLogin: Login = { email: '', password: '' };
 
   const form = useForm({
@@ -28,15 +31,19 @@ export function LoginForm({
       onChange: userSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      mutation.mutate(value);
     },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (data) => await login(data, form),
   });
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        form.handleSubmit();
+        await form.handleSubmit();
         form.reset();
       }}
       className={cn('flex flex-col gap-6', className)}

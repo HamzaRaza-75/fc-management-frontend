@@ -1,9 +1,9 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
-import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
+import viteReact from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +19,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      '@services': resolve(__dirname, 'src/services'),
+      '@config': resolve(__dirname, 'src/config'),
     },
   },
-})
+});
