@@ -2,10 +2,10 @@ import React from 'react';
 
 function LandingFooter() {
   return (
-    <footer className="bg-white">
+    <footer className="">
       <div className="mx-auto max-w-screen-xl space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-8">
         <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="text-teal-600">
+          <div className="text-primary">
             <svg
               className="h-8"
               viewBox="0 0 118 24"
@@ -61,7 +61,7 @@ function LandingFooter() {
                 href="#"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-700 transition hover:opacity-75"
+                className=" transition hover:opacity-75"
               >
                 <span className="sr-only">Facebook</span>
 
@@ -85,7 +85,7 @@ function LandingFooter() {
                 href="#"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-700 transition hover:opacity-75"
+                className=" transition hover:opacity-75"
               >
                 <span className="sr-only">Instagram</span>
 
@@ -109,7 +109,7 @@ function LandingFooter() {
                 href="#"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-700 transition hover:opacity-75"
+                className=" transition hover:opacity-75"
               >
                 <span className="sr-only">Twitter</span>
 
@@ -129,7 +129,7 @@ function LandingFooter() {
                 href="#"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-700 transition hover:opacity-75"
+                className=" transition hover:opacity-75"
               >
                 <span className="sr-only">GitHub</span>
 
@@ -153,7 +153,7 @@ function LandingFooter() {
                 href="#"
                 rel="noreferrer"
                 target="_blank"
-                className="text-gray-700 transition hover:opacity-75"
+                className=" transition hover:opacity-75"
               >
                 <span className="sr-only">Dribbble</span>
 
@@ -176,54 +176,39 @@ function LandingFooter() {
 
         <div className="grid grid-cols-1 gap-8 border-t border-gray-100 pt-8 sm:grid-cols-2 lg:grid-cols-4 lg:pt-16">
           <div>
-            <p className="font-medium text-gray-900">Services</p>
+            <p className="font-medium ">Services</p>
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   1on1 Coaching{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Company Review{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Accounts Review{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   HR Consulting{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   SEO Optimisation{' '}
                 </a>
@@ -232,34 +217,25 @@ function LandingFooter() {
           </div>
 
           <div>
-            <p className="font-medium text-gray-900">Company</p>
+            <p className="font-medium ">Company</p>
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   About{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Meet the Team{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Accounts Review{' '}
                 </a>
@@ -268,34 +244,25 @@ function LandingFooter() {
           </div>
 
           <div>
-            <p className="font-medium text-gray-900">Helpful Links</p>
+            <p className="font-medium ">Helpful Links</p>
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Contact{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   FAQs{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Live Chat{' '}
                 </a>
@@ -304,44 +271,32 @@ function LandingFooter() {
           </div>
 
           <div>
-            <p className="font-medium text-gray-900">Legal</p>
+            <p className="font-medium ">Legal</p>
 
             <ul className="mt-6 space-y-4 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Accessibility{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Returns Policy{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Refund Policy{' '}
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
+                <a href="#" className=" transition hover:opacity-75">
                   {' '}
                   Hiring-3 Statistics{' '}
                 </a>

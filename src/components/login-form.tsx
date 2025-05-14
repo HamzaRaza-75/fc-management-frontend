@@ -1,16 +1,18 @@
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
+import { login } from '@services/authentication';
+import { useNavigate } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { FieldInfo } from '@/lib/fieldinfo';
-import { useMutation } from '@tanstack/react-query';
-import { login } from '@services/authentication';
 
 const userSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6, 'Password Must contains 8 Digits'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
 });
 
 interface Login {
@@ -22,21 +24,29 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'form'>) {
-  // fetch request mutation
-  const defaultLogin: Login = { email: '', password: '' };
+  const navigate = useNavigate();
 
-  const form = useForm({
-    defaultValues: defaultLogin,
-    validators: {
-      onChange: userSchema,
+  const mutation = useMutation({
+    mutationFn: async (data: Login) => {
+      return await login(data);
     },
-    onSubmit: async ({ value }) => {
-      mutation.mutate(value);
+    onSuccess: (data) => {
+      toast.success('Logged in successfully!');
+      navigate({ to: '/' }); // redirect
+    },
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message || 'Login failed. Please try again.';
+      toast.error(message);
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: async (data) => await login(data, form),
+  const form = useForm({
+    defaultValues: { email: '', password: '' },
+    validators: { onChange: userSchema },
+    onSubmit: ({ value }) => {
+      mutation.mutate(value);
+    },
   });
 
   return (
@@ -44,7 +54,6 @@ export function LoginForm({
       onSubmit={async (e) => {
         e.preventDefault();
         await form.handleSubmit();
-        form.reset();
       }}
       className={cn('flex flex-col gap-6', className)}
       {...props}
@@ -55,7 +64,9 @@ export function LoginForm({
           Enter your email below to login to your account
         </p>
       </div>
+
       <div className="grid gap-6">
+        {/* Email */}
         <div className="grid gap-3">
           <form.Field name="email">
             {(field) => (
@@ -63,11 +74,11 @@ export function LoginForm({
                 <Label htmlFor={field.name}>Email</Label>
                 <Input
                   id="email"
+                  type="email"
                   name={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  type="email"
-                  placeholder="email@example.com"
+                  placeholder="you@example.com"
                   required
                 />
                 <span className="text-primary text-xs font-bold">
@@ -77,52 +88,72 @@ export function LoginForm({
             )}
           </form.Field>
         </div>
+
+        {/* Password */}
         <div className="grid gap-3">
-          <form.Field
-            name="password"
-            children={(field) => (
+          <form.Field name="password">
+            {(field) => (
               <>
                 <Label htmlFor={field.name}>Password</Label>
                 <Input
-                  name={field.name}
+                  id="password"
                   type="password"
+                  name={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="password"
+                  placeholder="••••••••"
+                  required
                 />
                 <span className="text-primary text-xs font-bold">
                   <FieldInfo field={field} />
                 </span>
               </>
             )}
-          />
+          </form.Field>
         </div>
+
+        {/* Submit Button */}
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit} className="w-full">
-              {isSubmitting ? '....' : 'Login'}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <Button
+              type="submit"
+              disabled={!canSubmit || mutation.isPending}
+              className="w-full"
+            >
+              {isSubmitting || mutation.isPending ? 'Logging in...' : 'Login'}
             </Button>
           )}
-        />
+        </form.Subscribe>
+
+        {/* Or divider */}
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">
             Or continue with
           </span>
         </div>
+
+        {/* GitHub login */}
         <Button variant="outline" className="w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="h-4 w-4 mr-2"
+          >
             <path
-              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385..."
               fill="currentColor"
             />
           </svg>
           Login with GitHub
         </Button>
       </div>
+
+      {/* Footer */}
       <div className="text-center text-sm">
         Don&apos;t have an account?{' '}
-        <a href="#" className="underline underline-offset-4">
+        <a href="/signup" className="underline underline-offset-4">
           Sign up
         </a>
       </div>

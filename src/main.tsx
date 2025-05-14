@@ -1,19 +1,22 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import { useAuth } from '@hooks/authHook';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { Provider } from 'react-redux';
 import * as TanstackQuery from './integrations/tanstack-query/root-provider';
-
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
 
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
+import { store } from './store';
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
   context: {
     ...TanstackQuery.getContext(),
+    auth: undefined!,
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -28,15 +31,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+function AppRouter() {
+  const auth = useAuth(); // OR use useAuth() here safely
+  return <RouterProvider router={router} context={{ auth }} />;
+}
+
 // Render the app
+
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <TanstackQuery.Provider>
-        <RouterProvider router={router} />
-      </TanstackQuery.Provider>
+      <Provider store={store}>
+        <TanstackQuery.Provider>
+          <AppRouter />
+        </TanstackQuery.Provider>
+      </Provider>
     </StrictMode>,
   );
 }

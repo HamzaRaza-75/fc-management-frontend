@@ -21,6 +21,8 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
       '@services': resolve(__dirname, 'src/services'),
       '@config': resolve(__dirname, 'src/config'),
+      '@context': resolve(__dirname, 'src/context'),
+      '@hooks': resolve(__dirname, 'src/hooks'),
     },
   },
 });

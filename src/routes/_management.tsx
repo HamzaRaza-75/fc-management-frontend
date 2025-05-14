@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Outlet } from '@tanstack/react-router';
 
 import { AppSidebar } from '@/components/app-sidebar';
@@ -18,6 +18,13 @@ import {
 } from '@/components/ui/sidebar';
 
 export const Route = createFileRoute('/_management')({
+  beforeLoad: ({ context }) => {
+    if (!context.auth) {
+      throw redirect({ to: '/login' });
+    } else if (!context.auth?.role?.includes('admin')) {
+      throw redirect({ to: '/' });
+    }
+  },
   component: RouteComponent,
 });
 
