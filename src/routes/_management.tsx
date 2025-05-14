@@ -19,9 +19,10 @@ import {
 
 export const Route = createFileRoute('/_management')({
   beforeLoad: ({ context }) => {
+    console.log(context);
     if (!context.auth) {
       throw redirect({ to: '/login' });
-    } else if (!context.auth?.role?.includes('admin')) {
+    } else if (!context.auth?.role?.includes('team-captain')) {
       throw redirect({ to: '/' });
     }
   },
