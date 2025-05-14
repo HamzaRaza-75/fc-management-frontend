@@ -1,9 +1,11 @@
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import { login } from '@services/authentication';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { setAuth } from '@/context/authSlice';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,14 +27,16 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<'form'>) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const mutation = useMutation({
     mutationFn: async (data: Login) => {
       return await login(data);
     },
-    onSuccess: (data) => {
+    onSuccess: (response) => {
+      dispatch(setAuth(response.data?.data?.access_token));
       toast.success('Logged in successfully!');
-      navigate({ to: '/' }); // redirect
+      navigate({ to: '/' });
     },
     onError: (error: any) => {
       const message =

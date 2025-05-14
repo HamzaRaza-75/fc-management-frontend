@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import LandingHeader from '@/components/landingpage/landing-header';
 import LandingHero from '@/components/landingpage/landing-hero';
 import LandingTab from '@/components/landingpage/landing-tab';

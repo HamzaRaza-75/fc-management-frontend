@@ -8,30 +8,25 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SignupImport } from './routes/signup'
+import { Route as LoginImport } from './routes/login'
 import { Route as ManagementImport } from './routes/_management'
 import { Route as IndexImport } from './routes/index'
 import { Route as ManagementManagementIndexImport } from './routes/_management.management.index'
 import { Route as ManagementManagementTasksImport } from './routes/_management.management.tasks'
 
-// Create Virtual Routes
-
-const SignupLazyImport = createFileRoute('/signup')()
-const LoginLazyImport = createFileRoute('/login')()
-
 // Create/Update Routes
 
-const SignupLazyRoute = SignupLazyImport.update({
+const SignupRoute = SignupImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
 
-const LoginLazyRoute = LoginLazyImport.update({
+const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
@@ -82,14 +77,14 @@ declare module '@tanstack/react-router' {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyImport
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
       id: '/signup'
       path: '/signup'
       fullPath: '/signup'
-      preLoaderRoute: typeof SignupLazyImport
+      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
     '/_management/management/tasks': {
@@ -128,8 +123,8 @@ const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof ManagementRouteWithChildren
-  '/login': typeof LoginLazyRoute
-  '/signup': typeof SignupLazyRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
 }
@@ -137,8 +132,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof ManagementRouteWithChildren
-  '/login': typeof LoginLazyRoute
-  '/signup': typeof SignupLazyRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
 }
@@ -147,8 +142,8 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_management': typeof ManagementRouteWithChildren
-  '/login': typeof LoginLazyRoute
-  '/signup': typeof SignupLazyRoute
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/_management/management/tasks': typeof ManagementManagementTasksRoute
   '/_management/management/': typeof ManagementManagementIndexRoute
 }
@@ -178,15 +173,15 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ManagementRoute: typeof ManagementRouteWithChildren
-  LoginLazyRoute: typeof LoginLazyRoute
-  SignupLazyRoute: typeof SignupLazyRoute
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ManagementRoute: ManagementRouteWithChildren,
-  LoginLazyRoute: LoginLazyRoute,
-  SignupLazyRoute: SignupLazyRoute,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -216,10 +211,10 @@ export const routeTree = rootRoute
       ]
     },
     "/login": {
-      "filePath": "login.lazy.tsx"
+      "filePath": "login.tsx"
     },
     "/signup": {
-      "filePath": "signup.lazy.tsx"
+      "filePath": "signup.tsx"
     },
     "/_management/management/tasks": {
       "filePath": "_management.management.tasks.tsx",

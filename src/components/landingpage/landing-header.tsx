@@ -31,12 +31,21 @@ export default function LandingHeader() {
                 </Link>
               </div>
             ) : (
-              <Link
-                to="/management"
-                className="text-foreground transition-colors hover:text-foreground/80"
-              >
-                Dashboard
-              </Link>
+              <>
+                <Link
+                  to="/management"
+                  className="text-foreground transition-colors hover:text-foreground/80"
+                >
+                  Dashboard
+                </Link>
+
+                <Link
+                  to="/signup"
+                  className="text-foreground transition-colors hover:text-foreground/80"
+                >
+                  Signup
+                </Link>
+              </>
             )}
 
             <ModeSwitcher />
