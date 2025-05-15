@@ -47,7 +47,9 @@ const ManagementManagementIndexRoute = ManagementManagementIndexImport.update({
   id: '/management/',
   path: '/management/',
   getParentRoute: () => ManagementRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_management.management.index.lazy').then((d) => d.Route),
+)
 
 const ManagementManagementTasksRoute = ManagementManagementTasksImport.update({
   id: '/management/tasks',

@@ -1,28 +1,27 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   GalleryVerticalEnd,
+  House,
   Map,
   PieChart,
   Settings2,
   SquareTerminal,
-} from 'lucide-react'
+} from 'lucide-react';
 
-import { NavMain } from '@/components/nav-main'
-import { NavProjects } from '@/components/nav-projects'
-import { NavUser } from '@/components/nav-user'
-import { TeamSwitcher } from '@/components/team-switcher'
+import { NavMain } from '@/components/nav-main';
+import { NavProjects } from '@/components/nav-projects';
+import { NavUser } from '@/components/nav-user';
+import { TeamSwitcher } from '@/components/team-switcher';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from '@/components/ui/sidebar'
+} from '@/components/ui/sidebar';
 
 // This is sample data.
 const data = {
@@ -31,106 +30,81 @@ const data = {
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
+  teams: {
+    name: 'Acme Inc',
+    logo: GalleryVerticalEnd,
+    plan: 'Enterprise',
+  },
   navMain: [
     {
-      title: 'Playground',
+      title: 'Clients',
       url: '#',
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: 'History',
-          url: '#',
+          title: 'All Clients',
+          url: '/management/clients',
         },
         {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
+          title: 'Create',
+          url: '/management/client/create',
         },
       ],
     },
     {
-      title: 'Models',
+      title: 'Users',
       url: '#',
       icon: Bot,
       items: [
         {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
+          title: 'All Users',
+          url: '/management/users',
         },
       ],
     },
     {
-      title: 'Documentation',
+      title: 'Tasks',
       url: '#',
       icon: BookOpen,
       items: [
         {
-          title: 'Introduction',
-          url: '#',
+          title: 'All Tasks',
+          url: '/management/tasks',
         },
         {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
+          title: 'Create Tasks',
+          url: '/management/task/create',
         },
       ],
     },
     {
-      title: 'Settings',
+      title: 'Teams',
       url: '#',
       icon: Settings2,
       items: [
         {
-          title: 'General',
-          url: '#',
+          title: 'All Teams',
+          url: '/management/teams',
         },
         {
-          title: 'Team',
-          url: '#',
+          title: 'Create Team',
+          url: '/management/team/create',
+        },
+      ],
+    },
+    {
+      title: 'Company',
+      url: '#',
+      icon: House,
+      items: [
+        {
+          title: 'All Companies',
+          url: '/management/companies',
         },
         {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
+          title: 'Add Company',
+          url: '/management/company/create',
         },
       ],
     },
@@ -152,13 +126,13 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher team={data.teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
@@ -169,5 +143,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
