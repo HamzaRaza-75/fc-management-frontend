@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -17,6 +19,21 @@ import { Route as ManagementImport } from './routes/_management'
 import { Route as IndexImport } from './routes/index'
 import { Route as ManagementManagementIndexImport } from './routes/_management.management.index'
 import { Route as ManagementManagementTasksImport } from './routes/_management.management.tasks'
+import { Route as ManagementManagementUsersIndexImport } from './routes/_management.management.users.index'
+import { Route as ManagementManagementTeamsIndexImport } from './routes/_management.management.teams.index'
+import { Route as ManagementManagementCompaniesIndexImport } from './routes/_management.management.companies.index'
+import { Route as ManagementManagementClientsIndexImport } from './routes/_management.management.clients.index'
+import { Route as ManagementManagementTeamCreateImport } from './routes/_management.management.team.create'
+import { Route as ManagementManagementCompanyCreateImport } from './routes/_management.management.company.create'
+
+// Create Virtual Routes
+
+const ManagementManagementTaskCreateLazyImport = createFileRoute(
+  '/_management/management/task/create',
+)()
+const ManagementManagementClientCreateLazyImport = createFileRoute(
+  '/_management/management/client/create',
+)()
 
 // Create/Update Routes
 
@@ -55,7 +72,89 @@ const ManagementManagementTasksRoute = ManagementManagementTasksImport.update({
   id: '/management/tasks',
   path: '/management/tasks',
   getParentRoute: () => ManagementRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_management.management.tasks.lazy').then((d) => d.Route),
+)
+
+const ManagementManagementUsersIndexRoute =
+  ManagementManagementUsersIndexImport.update({
+    id: '/management/users/',
+    path: '/management/users/',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.users.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementTeamsIndexRoute =
+  ManagementManagementTeamsIndexImport.update({
+    id: '/management/teams/',
+    path: '/management/teams/',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.teams.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementCompaniesIndexRoute =
+  ManagementManagementCompaniesIndexImport.update({
+    id: '/management/companies/',
+    path: '/management/companies/',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.companies.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementClientsIndexRoute =
+  ManagementManagementClientsIndexImport.update({
+    id: '/management/clients/',
+    path: '/management/clients/',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.clients.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementTaskCreateLazyRoute =
+  ManagementManagementTaskCreateLazyImport.update({
+    id: '/management/task/create',
+    path: '/management/task/create',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.task.create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementClientCreateLazyRoute =
+  ManagementManagementClientCreateLazyImport.update({
+    id: '/management/client/create',
+    path: '/management/client/create',
+    getParentRoute: () => ManagementRoute,
+  } as any).lazy(() =>
+    import('./routes/_management.management.client.create.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const ManagementManagementTeamCreateRoute =
+  ManagementManagementTeamCreateImport.update({
+    id: '/management/team/create',
+    path: '/management/team/create',
+    getParentRoute: () => ManagementRoute,
+  } as any)
+
+const ManagementManagementCompanyCreateRoute =
+  ManagementManagementCompanyCreateImport.update({
+    id: '/management/company/create',
+    path: '/management/company/create',
+    getParentRoute: () => ManagementRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -103,6 +202,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManagementManagementIndexImport
       parentRoute: typeof ManagementImport
     }
+    '/_management/management/company/create': {
+      id: '/_management/management/company/create'
+      path: '/management/company/create'
+      fullPath: '/management/company/create'
+      preLoaderRoute: typeof ManagementManagementCompanyCreateImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/team/create': {
+      id: '/_management/management/team/create'
+      path: '/management/team/create'
+      fullPath: '/management/team/create'
+      preLoaderRoute: typeof ManagementManagementTeamCreateImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/client/create': {
+      id: '/_management/management/client/create'
+      path: '/management/client/create'
+      fullPath: '/management/client/create'
+      preLoaderRoute: typeof ManagementManagementClientCreateLazyImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/task/create': {
+      id: '/_management/management/task/create'
+      path: '/management/task/create'
+      fullPath: '/management/task/create'
+      preLoaderRoute: typeof ManagementManagementTaskCreateLazyImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/clients/': {
+      id: '/_management/management/clients/'
+      path: '/management/clients'
+      fullPath: '/management/clients'
+      preLoaderRoute: typeof ManagementManagementClientsIndexImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/companies/': {
+      id: '/_management/management/companies/'
+      path: '/management/companies'
+      fullPath: '/management/companies'
+      preLoaderRoute: typeof ManagementManagementCompaniesIndexImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/teams/': {
+      id: '/_management/management/teams/'
+      path: '/management/teams'
+      fullPath: '/management/teams'
+      preLoaderRoute: typeof ManagementManagementTeamsIndexImport
+      parentRoute: typeof ManagementImport
+    }
+    '/_management/management/users/': {
+      id: '/_management/management/users/'
+      path: '/management/users'
+      fullPath: '/management/users'
+      preLoaderRoute: typeof ManagementManagementUsersIndexImport
+      parentRoute: typeof ManagementImport
+    }
   }
 }
 
@@ -111,11 +266,31 @@ declare module '@tanstack/react-router' {
 interface ManagementRouteChildren {
   ManagementManagementTasksRoute: typeof ManagementManagementTasksRoute
   ManagementManagementIndexRoute: typeof ManagementManagementIndexRoute
+  ManagementManagementCompanyCreateRoute: typeof ManagementManagementCompanyCreateRoute
+  ManagementManagementTeamCreateRoute: typeof ManagementManagementTeamCreateRoute
+  ManagementManagementClientCreateLazyRoute: typeof ManagementManagementClientCreateLazyRoute
+  ManagementManagementTaskCreateLazyRoute: typeof ManagementManagementTaskCreateLazyRoute
+  ManagementManagementClientsIndexRoute: typeof ManagementManagementClientsIndexRoute
+  ManagementManagementCompaniesIndexRoute: typeof ManagementManagementCompaniesIndexRoute
+  ManagementManagementTeamsIndexRoute: typeof ManagementManagementTeamsIndexRoute
+  ManagementManagementUsersIndexRoute: typeof ManagementManagementUsersIndexRoute
 }
 
 const ManagementRouteChildren: ManagementRouteChildren = {
   ManagementManagementTasksRoute: ManagementManagementTasksRoute,
   ManagementManagementIndexRoute: ManagementManagementIndexRoute,
+  ManagementManagementCompanyCreateRoute:
+    ManagementManagementCompanyCreateRoute,
+  ManagementManagementTeamCreateRoute: ManagementManagementTeamCreateRoute,
+  ManagementManagementClientCreateLazyRoute:
+    ManagementManagementClientCreateLazyRoute,
+  ManagementManagementTaskCreateLazyRoute:
+    ManagementManagementTaskCreateLazyRoute,
+  ManagementManagementClientsIndexRoute: ManagementManagementClientsIndexRoute,
+  ManagementManagementCompaniesIndexRoute:
+    ManagementManagementCompaniesIndexRoute,
+  ManagementManagementTeamsIndexRoute: ManagementManagementTeamsIndexRoute,
+  ManagementManagementUsersIndexRoute: ManagementManagementUsersIndexRoute,
 }
 
 const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
@@ -129,6 +304,14 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
+  '/management/company/create': typeof ManagementManagementCompanyCreateRoute
+  '/management/team/create': typeof ManagementManagementTeamCreateRoute
+  '/management/client/create': typeof ManagementManagementClientCreateLazyRoute
+  '/management/task/create': typeof ManagementManagementTaskCreateLazyRoute
+  '/management/clients': typeof ManagementManagementClientsIndexRoute
+  '/management/companies': typeof ManagementManagementCompaniesIndexRoute
+  '/management/teams': typeof ManagementManagementTeamsIndexRoute
+  '/management/users': typeof ManagementManagementUsersIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -138,6 +321,14 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/management/tasks': typeof ManagementManagementTasksRoute
   '/management': typeof ManagementManagementIndexRoute
+  '/management/company/create': typeof ManagementManagementCompanyCreateRoute
+  '/management/team/create': typeof ManagementManagementTeamCreateRoute
+  '/management/client/create': typeof ManagementManagementClientCreateLazyRoute
+  '/management/task/create': typeof ManagementManagementTaskCreateLazyRoute
+  '/management/clients': typeof ManagementManagementClientsIndexRoute
+  '/management/companies': typeof ManagementManagementCompaniesIndexRoute
+  '/management/teams': typeof ManagementManagementTeamsIndexRoute
+  '/management/users': typeof ManagementManagementUsersIndexRoute
 }
 
 export interface FileRoutesById {
@@ -148,6 +339,14 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_management/management/tasks': typeof ManagementManagementTasksRoute
   '/_management/management/': typeof ManagementManagementIndexRoute
+  '/_management/management/company/create': typeof ManagementManagementCompanyCreateRoute
+  '/_management/management/team/create': typeof ManagementManagementTeamCreateRoute
+  '/_management/management/client/create': typeof ManagementManagementClientCreateLazyRoute
+  '/_management/management/task/create': typeof ManagementManagementTaskCreateLazyRoute
+  '/_management/management/clients/': typeof ManagementManagementClientsIndexRoute
+  '/_management/management/companies/': typeof ManagementManagementCompaniesIndexRoute
+  '/_management/management/teams/': typeof ManagementManagementTeamsIndexRoute
+  '/_management/management/users/': typeof ManagementManagementUsersIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -159,8 +358,30 @@ export interface FileRouteTypes {
     | '/signup'
     | '/management/tasks'
     | '/management'
+    | '/management/company/create'
+    | '/management/team/create'
+    | '/management/client/create'
+    | '/management/task/create'
+    | '/management/clients'
+    | '/management/companies'
+    | '/management/teams'
+    | '/management/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/signup' | '/management/tasks' | '/management'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/signup'
+    | '/management/tasks'
+    | '/management'
+    | '/management/company/create'
+    | '/management/team/create'
+    | '/management/client/create'
+    | '/management/task/create'
+    | '/management/clients'
+    | '/management/companies'
+    | '/management/teams'
+    | '/management/users'
   id:
     | '__root__'
     | '/'
@@ -169,6 +390,14 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_management/management/tasks'
     | '/_management/management/'
+    | '/_management/management/company/create'
+    | '/_management/management/team/create'
+    | '/_management/management/client/create'
+    | '/_management/management/task/create'
+    | '/_management/management/clients/'
+    | '/_management/management/companies/'
+    | '/_management/management/teams/'
+    | '/_management/management/users/'
   fileRoutesById: FileRoutesById
 }
 
@@ -209,7 +438,15 @@ export const routeTree = rootRoute
       "filePath": "_management.tsx",
       "children": [
         "/_management/management/tasks",
-        "/_management/management/"
+        "/_management/management/",
+        "/_management/management/company/create",
+        "/_management/management/team/create",
+        "/_management/management/client/create",
+        "/_management/management/task/create",
+        "/_management/management/clients/",
+        "/_management/management/companies/",
+        "/_management/management/teams/",
+        "/_management/management/users/"
       ]
     },
     "/login": {
@@ -224,6 +461,38 @@ export const routeTree = rootRoute
     },
     "/_management/management/": {
       "filePath": "_management.management.index.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/company/create": {
+      "filePath": "_management.management.company.create.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/team/create": {
+      "filePath": "_management.management.team.create.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/client/create": {
+      "filePath": "_management.management.client.create.lazy.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/task/create": {
+      "filePath": "_management.management.task.create.lazy.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/clients/": {
+      "filePath": "_management.management.clients.index.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/companies/": {
+      "filePath": "_management.management.companies.index.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/teams/": {
+      "filePath": "_management.management.teams.index.tsx",
+      "parent": "/_management"
+    },
+    "/_management/management/users/": {
+      "filePath": "_management.management.users.index.tsx",
       "parent": "/_management"
     }
   }

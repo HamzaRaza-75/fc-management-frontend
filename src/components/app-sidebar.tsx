@@ -2,10 +2,10 @@ import * as React from 'react';
 import {
   BookOpen,
   Bot,
-  Frame,
+  CalendarDays,
+  FileChartColumnIncreasing,
   GalleryVerticalEnd,
   House,
-  Map,
   PieChart,
   Settings2,
   SquareTerminal,
@@ -109,11 +109,11 @@ const data = {
       ],
     },
   ],
-  projects: [
+  reports: [
     {
-      name: 'Design Engineering',
+      name: 'Tasks Reports',
       url: '#',
-      icon: Frame,
+      icon: FileChartColumnIncreasing,
     },
     {
       name: 'Sales & Marketing',
@@ -121,9 +121,9 @@ const data = {
       icon: PieChart,
     },
     {
-      name: 'Travel',
+      name: 'Attandance',
       url: '#',
-      icon: Map,
+      icon: CalendarDays,
     },
   ],
 };
@@ -136,7 +136,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects reports={data.reports} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

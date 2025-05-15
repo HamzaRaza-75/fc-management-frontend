@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/sidebar';
 
 export function NavProjects({
-  projects,
+  reports,
 }: {
-  projects: {
+  reports: {
     name: string;
     url: string;
     icon: LucideIcon;
@@ -22,12 +22,20 @@ export function NavProjects({
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Reports</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {reports.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <Link to={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
+                {({ isActive }) => {
+                  return (
+                    <>
+                      <item.icon />
+                      <span className={isActive ? 'bg-red-400' : ''}>
+                        {item.name}
+                      </span>
+                    </>
+                  );
+                }}
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
